@@ -234,6 +234,76 @@ public class Binarytree {
 
     }
 
+    public static Node lca2(Node root , int n1 ,int n2){
+        if( root==  null || root.data == n1 || root.data == n2){
+            return root;
+        }
+        Node leftlca = lca2(root.left , n1 , n2);
+        Node rightlca = lca2(root.right , n1,n2);
+
+        // if leftlca return val and right lca return null then
+        if(rightlca == null){
+            return leftlca;
+        }
+        // if rightlca retunr val and leftlca return null then
+        if(leftlca == null){
+            return rightlca;
+        }
+        return root;
+
+
+    }
+    public static int lcaDist(Node root, int n ){
+        if(root== null){
+            return -1;
+        }
+        if(root.data == n ){
+            return 0;
+        }
+        int leftDist  = lcaDist(root.left , n);
+        int rightDist = lcaDist(root.right, n);
+
+        if(leftDist == -1 && rightDist ==-1){
+            return -1;
+        }else if(leftDist == -1){
+            return rightDist+1;
+        }else {
+            return leftDist +1;
+        }
+    }
+
+
+    public static int minDis(Node root , int n1 , int n2){
+
+        Node lca = lca2(root, n1 , n2);
+        int Dist1 = lcaDist(lca , n1);
+        int Dist2 = lcaDist(lca , n2);
+
+        return Dist1 + Dist1;
+
+    }
+
+    public static int KthAncestoe(Node root , int n , int k ){
+        if (root == null){
+            return -1;
+        }
+        if(root.data ==  n){
+            return 0;
+        }
+        int leftDist = KthAncestoe(root.left , n , k);
+        int rightDist = KthAncestoe(root.right,n,k);
+
+        if(leftDist == -1 && rightDist == -1){
+            return -1;
+        }
+        int max = Math.max(leftDist , rightDist);
+        if((max+1) == k){
+            System.out.println(root.data);
+        }
+        return max+1;
+    }
+
+
 
 
     public static void main(String[] args) {
@@ -270,7 +340,12 @@ public class Binarytree {
 //        System.out.println(isidentical(root, subroot));
 //        LevelorderTraversal(root);
 //        TopViewoftree(root);
-        Klevel(root , 1 ,2);
+//        Klevel(root , 1 ,2);
+
+//        System.out.println(lca2(root,1 , 7).data);
+//        System.out.println(minDis(root , 4, 6 ));
+        KthAncestoe(root,5,2);
+
 
 
 
