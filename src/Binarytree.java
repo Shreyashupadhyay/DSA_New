@@ -303,6 +303,24 @@ public class Binarytree {
         return max+1;
     }
 
+    public static int transfor_to_sum_tree(Node root ){
+        if ((root == null)){
+            return 0;
+        }
+        int leftchild = transfor_to_sum_tree(root.left);
+        int rightchild = transfor_to_sum_tree(root.right);
+
+        int data = root.data;
+        int newleft = root.left == null ? 0: root.left.data;
+        int newright = root.right == null ? 0 : root.right.data;
+
+        root.data = newleft + leftchild + newleft + rightchild;
+
+        return data;
+    }
+
+    
+
 
 
 
