@@ -10,6 +10,7 @@ public class Binary_Search_tree {
 
         Node(int data){
             this.data = data;
+            this.left = this.right = null;
         }
 
     }
@@ -190,15 +191,100 @@ public class Binary_Search_tree {
         inorder(root.right);
     }
 
+    static class info{
+        boolean isBST;
+        int size;
+        int min;
+        int max;
+        public info(boolean isBST , int size,  int min, int max){
+            this.isBST = isBST;
+            this.size = size;
+            this.min = min;
+            this.max= max;
+        }
+
+    }
+
+    public static int maxBST = 0;
+
+    public static info largestBST(Node root){
+
+        if(root == null){
+            return new info(true , 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        }
+        info leftInfo = largestBST(root.left);
+        info rightInfo = largestBST(root.right);
+        int size = leftInfo.size+rightInfo.size+1;
+        int min = Math.min(root.data,Math.min(leftInfo.min,rightInfo.min));
+        int max = Math.max(root.data,Math.max(leftInfo.max,rightInfo.max));
+        // to get isBST
+        if(root.data <= leftInfo.max || root.data >= rightInfo.min){
+            return new info(false , size , min, max);
+        }
+        if(leftInfo.isBST && rightInfo.isBST ){
+            maxBST  = Math.max(maxBST , size);
+            return new info(true , size , min , max);
+        }
+        return new info(false, size , min , max);
+
+
+    }
+    public static Node CreateBST(ArrayList<Integer> arr, int st , int end){
+        if(st>end){
+            return null;
+
+        }
+        int mid = (st+end)/2;
+        Node root = new Node(arr.get(mid));
+        root.left = CreateBST(arr,st ,mid-1);
+        root.right = CreateBST(arr, mid+1,end);
+        return root;
+    }
+
+    public static Node mergeBST(Node root1, Node root2){
+        //step 1
+        ArrayList<Integer> arr1 = new ArrayList<>();
+        getinorder(root1 , arr1);
+        // step 2
+        ArrayList<Integer> arr2 = new ArrayList<>();
+        getinorder(root1 , arr2);
+
+        //merge
+
+        int i = 0 , j=0;
+        ArrayList<Integer> finalarr = new ArrayList<>();
+        while(i<arr1.size() && j<arr2.size()){
+            if(arr1.get(i) <= arr2.get(j)){
+                finalarr.add(arr1.get(i));
+                i++;
+            }else{
+                finalarr.add(arr2.get(j));
+                j++;
+            }
+        }
+        while(i<arr1.size()){
+            finalarr.add(arr1.get(i));
+            i++;
+        }
+        while (i<arr2.size()){
+            finalarr.add(arr2.get(j));
+            j++;
+        }
+
+        return CreateBST(finalarr , 0, finalarr.size()-10);
+
+    }
+
+
 
 
     public static void main(String[] args) {
-//        Node root = new Node(8 );
-//        root.left = new Node(5);
-//        root.right = new Node(10);
-//        root.left.left = new Node(3);
-//        root.left.right = new Node(6);
-//        root.right.right = new Node(11);
+        Node root1 = new Node(8 );
+        root1.left = new Node(5);
+        root1.right = new Node(10);
+        root1.left.left = new Node(3);
+        root1.left.right = new Node(6);
+        root1.right.right = new Node(11);
 
         int arr[] = { 3,5,6,8,10,11,12};
 
@@ -229,6 +315,24 @@ public class Binary_Search_tree {
 //        preorder(root);
 //        Node root = balanceBSt(arr , 0, arr.length-1);
 //        preorder(root);
+
+        // binary tree
+        Node root2 = new Node(30);
+        root2.left = new Node(30);
+        root2.left.left = new Node(5);
+        root2.left.right = new Node(20);
+
+        root2.right = new Node(60);
+        root2.right.left = new Node(45);
+        root2.right.right = new Node(70);
+        root2.right.right.left = new Node(65);
+        root2.right.right.right = new Node(80);
+
+//        info info = largestBST(root);
+//        System.out.println("Largest BST is :"+maxBST);
+
+        Node root = mergeBST(root1 , root2);
+        preorder(root);
 
 
 
