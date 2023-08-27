@@ -1,8 +1,6 @@
 import java.awt.image.AreaAveragingScaleFilter;
 import java.security.interfaces.EdECKey;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.*;
 
 public class graphs {
     static class Edge{
@@ -200,6 +198,112 @@ public class graphs {
         }
         return true;
     }
+    public static boolean isCycleutil(ArrayList<Edge>[] graphs , int curr, boolean vis[] , boolean stack[]){
+        vis[curr] = true;
+        stack[curr] = true;
+        for (int i = 0;i<graphs[curr].size();i++){
+            Edge e = graphs[curr].get(i);
+            if(stack[e.dest]){
+                return true;
+            }
+            if(!vis[e.dest] && isCycleutil(graphs , e.dest , vis , stack)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isCycle(ArrayList<Edge>[] graphs){
+        boolean vis[] = new boolean[graphs.length];
+        boolean stack[] = new boolean[graphs.length];
+        for (int i = 0;i<graphs.length;i++){
+            if(!vis[i]){
+                if(isCycleutil(graphs , i , vis, stack)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public static void topSort(ArrayList<Edge> [] graphs){
+        boolean vis[] = new boolean[graphs.length];
+        Stack<Integer> s = new Stack<>();
+        for (int i= 0;i< graphs.length;i++){
+            if(!vis[i]){
+                topSortutil(graphs , i ,vis , s);
+            }
+        }
+        while (!s.isEmpty()){
+            System.out.print(s.pop()+" ");
+        }
+    }
+    public static void topSortutil(ArrayList<Edge> []graphs, int curr, boolean vis[] , Stack<Integer> s){
+        vis[curr]=true;
+        for (int i = 0;i<graphs[curr].size();i++){
+            Edge e = graphs[curr].get(i);
+            if(!vis[e.dest]){
+                topSortutil(graphs, e.dest, vis, s);
+            }
+        }
+        s.push(curr);
+    }
+
+    public static void printAllPath(ArrayList<Edge> [] graphs , int sur , int dest , String path){
+        if(sur == dest){
+            System.out.println(path+dest);
+            return;
+        }
+        for (int i = 0;i<graphs[sur].size();i++){
+            Edge e = graphs[sur].get(i);
+            printAllPath(graphs , e.dest ,dest , path+sur);
+        }
+    }
+
+    static class Pair implements Comparable<Pair>{
+        int n ;
+        int path;
+        public Pair(int n ,int path){
+            this.n= n;
+            this.path = path;
+        }
+
+        @Override
+        public int compareTo(Pair p2) {
+            return this.path - p2.path;
+        }
+    }
+
+    public static void Dijkstra(ArrayList<Edge> [] graphs , int src){
+        int dist[] = new int[graphs.length];
+        for (int i = 0;i<graphs.length;i++){
+            if(i!=src){
+                dist[i] = Integer.MAX_VALUE;
+            }
+        }
+        Boolean vist[] = new Boolean[graphs.length];
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        pq.add(new Pair(src,0));
+        while (!pq.isEmpty()){
+            Pair curr = pq.remove();
+            if(!vist[curr.n]){
+                vist[curr.n] = true;
+                for (int i= 0;i<graphs[curr.n].size();i++){
+                    Edge e = graphs[curr.n].get(i);
+                    int u = e.src;
+                    int v = e.dest;
+                    int wt = e.wt;
+                    if(dist[u] + wt <dist[v]){
+                        dist[v] = dist[u] +wt;
+                        pq.add(new Pair(v,dist[v]));
+                    }
+                }
+            }
+        }
+        for (int i = 0;i<dist.length;i++){
+            System.out.print(dist[i]+" ");
+        }
+        System.out.println();
+    }
 
 
 
@@ -211,7 +315,11 @@ public class graphs {
 //        Dfs(graphs , 0,new boolean[v]);
 //        dfs(graphs);
 //        System.out.println(hasPath(graphs,0,5,new boolean[v]));
-        System.out.println(DetectCycle(graphs));
+//        System.out.println(DetectCycle(graphs));
+//        System.out.println(isCycle(graphs));
+//        topSort(graphs);
+//        printAllPath(graphs , 0, 6 , "");
+        Dijkstra(graphs, 0);
 
 
 
