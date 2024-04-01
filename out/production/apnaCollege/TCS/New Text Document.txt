@@ -90,7 +90,7 @@ Count number of vowels, consonants, spaces in String -- DONE
 Find the ASCII value of a character -- DONE
 Remove all vowels from the string -- DONE
 Remove spaces from a string -- DONE
-Remove characters from a string except alphabets
+Remove characters from a string except alphabets -- DONE
 Reverse a String
 Remove brackets from an algebraic expression
 Sum of the numbers in a String

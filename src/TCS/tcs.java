@@ -1,6 +1,88 @@
 package TCS;
 
+import java.util.Arrays;
+import java.util.HashMap;
+
 public class tcs {
+
+    public static void  sort_according_to_rank(){
+        int arr[] = {20,15,26,2,98,6};
+        int temp = 1;
+        HashMap<Integer , Integer> hm = new HashMap<>();
+        int dummpy[] = new int[arr.length];
+        for(int i = 0;i< dummpy.length;i++){
+            dummpy[i] = arr[i];
+        }
+        Arrays.sort(dummpy);
+        for (int i = 0;i<dummpy.length;i++){
+            if(hm.get(dummpy[i]) == null){
+                hm.put(dummpy[i], temp);
+                temp++;
+            }
+        }
+        for (int i = 0;i<dummpy.length;i++){
+            System.out.print(hm.get(arr[i]) + " ");
+        }
+    }
+
+    public static void equilibrium_index(){
+        int arr[] = {2,3,-1,8,4};
+        int total_sum = 0;
+        for(int i = 0;i<arr.length;i++){
+            total_sum += arr[i];
+        }
+        int left_sum = 0, rright_sum = total_sum;
+        for (int i = 0;i<arr.length;i++){
+            rright_sum -= arr[i];
+            if (left_sum == rright_sum){
+                System.out.println(i);
+            }
+            left_sum += arr[i];
+        }
+    }
+
+    public static void binarySeach(){
+        int arr1[] = {2,4,3,1,7,5,15};
+        int key = 5;
+        int start = 0;
+        int end = arr1.length-1;
+        int mid = (start+end)/2;
+        while(start <= end){
+
+            if(arr1[mid] < key){
+                start = mid +1;
+            }else if (arr1[mid] == key){
+                System.out.println("found");
+                break;
+            }else{
+                end = mid-1;
+            }
+            mid = (start+end)/2;
+
+        }
+    }
+
+    public static void check_arr_is_subset_of_array(){
+        int arr1[] = {1,3,4,5,2};
+        int arr2[] = {2,4,3,1,7,5,15};
+
+
+        for(int i = 0;i< arr1.length;i++){
+            boolean ch = false;
+            for(int j = 0;j< arr2.length;j++){
+                if(arr1[i] == arr2[j]){
+                    ch = true;
+                }
+
+            }
+            if(ch == false){
+                System.out.println("not subset");
+            }
+
+
+        }
+
+    }
 
     public static void reverseString(){
 
@@ -97,7 +179,11 @@ public class tcs {
 //        ASCII('A');
 //        removeVowel();
 //        removeSpaces();
-        onlykeepalphbet();
+//        onlykeepalphbet();
+//        check_arr_is_subset_of_array();
+//        binarySeach();
+//        equilibrium_index();
+          sort_according_to_rank();
 
 
     }
